@@ -1,40 +1,60 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import CleanPortfolioLightbox, { LightboxItem } from "./CleanPortfolioLightbox";
 
 interface HeroSectionProps {
   settings: Record<string, string>;
 }
 
 export default function HeroSection({ settings }: HeroSectionProps) {
+  const [activeLightboxIdx, setActiveLightboxIdx] = useState<number | null>(null);
   const whatsappMsg = encodeURIComponent("Hi Sakhawat, I'd like to discuss a design project.");
   const whatsappUrl = `https://wa.me/8801781955355?text=${whatsappMsg}`;
 
   const showcaseCards = [
     {
+      id: 1,
       badge: "Brand Identity",
       title: "Aura Tech Guidelines",
       image: "/images/projects/project-1.webp",
-      href: "/portfolio/aura-tech-brand-identity",
+      videoUrl: null,
+      isVideo: false,
     },
     {
+      id: 2,
       badge: "Luxury Packaging",
       title: "Maison Luxe 3D Mockup",
       image: "/images/projects/project-2.webp",
-      href: "/portfolio/maison-luxe-packaging",
+      videoUrl: null,
+      isVideo: false,
     },
     {
+      id: 3,
       badge: "Social Media Ads",
       title: "Apex Athletics Campaign",
       image: "/images/projects/project-3.webp",
-      href: "/portfolio/apex-athletics-social-campaign",
+      videoUrl: null,
+      isVideo: false,
     },
     {
+      id: 4,
       badge: "AI Motion & Video",
       title: "Zenith AI Launch Video",
       image: "/images/projects/project-4.webp",
-      href: "/portfolio/zenith-ai-brand-video",
+      videoUrl: "https://www.youtube.com/watch?v=EngW7tLk6R8",
+      isVideo: true,
     },
   ];
+
+  const lightboxItems: LightboxItem[] = showcaseCards.map((c) => ({
+    id: c.id,
+    image: c.image,
+    videoUrl: c.videoUrl,
+    isVideo: c.isVideo,
+  }));
 
   return (
     <section
@@ -156,7 +176,20 @@ export default function HeroSection({ settings }: HeroSectionProps) {
         <div className="hero-deck-container reveal-soft-scale is-visible delay-5">
           <div className="hero-deck">
             {showcaseCards.map((card, idx) => (
-              <Link key={idx} href={card.href} className="deck-card soft-hover-lift" aria-label={`View ${card.title}`}>
+              <button
+                type="button"
+                key={idx}
+                onClick={() => setActiveLightboxIdx(idx)}
+                className="deck-card soft-hover-lift"
+                aria-label={`Open ${card.title}`}
+                style={{
+                  border: "none",
+                  background: "none",
+                  padding: 0,
+                  textAlign: "left",
+                  cursor: "pointer",
+                }}
+              >
                 <div className="deck-card-image">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={card.image} alt={card.title} loading="eager" />
@@ -189,15 +222,23 @@ export default function HeroSection({ settings }: HeroSectionProps) {
                 <div className="deck-card-info">
                   <div className="deck-card-title">{card.title}</div>
                   <div className="deck-card-action">
-                    <span>View Project</span>
-                    <span>↗</span>
+                    <span>{card.isVideo ? "Play Video" : "View Design"}</span>
+                    <span>{card.isVideo ? "▶" : "↗"}</span>
                   </div>
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Clean Full-Screen Lightbox Modal for Hero Deck */}
+      <CleanPortfolioLightbox
+        items={lightboxItems}
+        currentIndex={activeLightboxIdx}
+        onClose={() => setActiveLightboxIdx(null)}
+        onNavigate={(idx) => setActiveLightboxIdx(idx)}
+      />
     </section>
   );
 }

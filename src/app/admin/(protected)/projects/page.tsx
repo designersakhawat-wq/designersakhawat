@@ -6,6 +6,7 @@ import Link from "next/link";
 interface Project {
   id: number; title: string; slug: string; status: string; featured: number;
   service_name: string | null; cover_thumb: string | null; cover_media_id: number | null;
+  video_url?: string | null;
   display_order: number; updated_at: string;
 }
 

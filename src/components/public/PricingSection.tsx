@@ -24,9 +24,16 @@ export default function PricingSection({
             <h2 id="pricing-heading" className="section-heading">Pricing Packages</h2>
             <div className={`grid-${Math.min(packages.length, 3)}`} style={{ marginBottom: showQuote ? "var(--space-2xl)" : 0 }}>
               {packages.map((pkg, i) => {
-                const features: string[] = pkg.features_json
-                  ? JSON.parse(pkg.features_json)
-                  : [];
+                let features: string[] = [];
+                if (Array.isArray(pkg.features_json)) {
+                  features = pkg.features_json;
+                } else if (typeof pkg.features_json === "string") {
+                  try {
+                    features = JSON.parse(pkg.features_json);
+                  } catch {
+                    features = [];
+                  }
+                }
                 const isFeatured = i === Math.floor(packages.length / 2);
                 const whatsappMsg = encodeURIComponent(`Hi Sakhawat, I'm interested in the "${pkg.name}" package for ${serviceName}.`);
                 const whatsappUrl = `${whatsappBase}?text=${whatsappMsg}`;

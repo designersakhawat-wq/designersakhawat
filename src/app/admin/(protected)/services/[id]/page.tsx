@@ -40,11 +40,23 @@ export default function AdminServiceEditPage() {
       .then((data) => {
         setService(data.service);
         setPackages(
-          (data.packages || []).map((p: Package & { features_json?: string }) => ({
-            ...p,
-            price: String(p.price || ""),
-            features: p.features_json ? JSON.parse(p.features_json) : [],
-          }))
+          (data.packages || []).map((p: Package & { features_json?: string | string[] }) => {
+            let feats: string[] = [];
+            if (Array.isArray(p.features_json)) {
+              feats = p.features_json;
+            } else if (typeof p.features_json === "string") {
+              try {
+                feats = JSON.parse(p.features_json);
+              } catch {
+                feats = [];
+              }
+            }
+            return {
+              ...p,
+              price: String(p.price || ""),
+              features: feats,
+            };
+          })
         );
         setLoading(false);
       });

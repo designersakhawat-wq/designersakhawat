@@ -42,7 +42,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     const { id } = await params;
     const body = await req.json();
     const {
-      title, slug, cover_media_id, service_id, client, industry,
+      title, slug, cover_media_id, video_url, service_id, client, industry,
       short_description, challenge, solution, result, services_provided,
       featured, display_order, seo_title, seo_description, og_image_id
     } = body;
@@ -57,8 +57,8 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 
     await execute(
-      `UPDATE projects SET title=?, slug=?, cover_media_id=?, service_id=?, client=?, industry=?, short_description=?, challenge=?, solution=?, result=?, services_provided=?, featured=?, display_order=?, seo_title=?, seo_description=?, og_image_id=? WHERE id=?`,
-      [title, slug, cover_media_id || null, service_id || null, client || null, industry || null, short_description || null, challenge || null, solution || null, result || null, services_provided || null, featured ? 1 : 0, display_order || 0, seo_title || null, seo_description || null, og_image_id || null, id]
+      `UPDATE projects SET title=?, slug=?, cover_media_id=?, video_url=?, service_id=?, client=?, industry=?, short_description=?, challenge=?, solution=?, result=?, services_provided=?, featured=?, display_order=?, seo_title=?, seo_description=?, og_image_id=? WHERE id=?`,
+      [title, slug, cover_media_id || null, video_url || null, service_id || null, client || null, industry || null, short_description || null, challenge || null, solution || null, result || null, services_provided || null, featured ? 1 : 0, display_order || 0, seo_title || null, seo_description || null, og_image_id || null, id]
     );
 
     await execute("INSERT INTO activity_log (action, entity_type, entity_id, detail) VALUES (?, ?, ?, ?)",

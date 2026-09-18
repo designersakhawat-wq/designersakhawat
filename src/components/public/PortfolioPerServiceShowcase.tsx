@@ -1,20 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import CleanPortfolioLightbox, { LightboxItem } from "./CleanPortfolioLightbox";
+
+interface ProjectItem {
+  id: number | string;
+  title: string;
+  slug: string;
+  image: string;
+  badge: string;
+  videoUrl?: string | null;
+  isVideo?: boolean;
+}
 
 interface ServiceGroup {
   id: number;
   name: string;
   slug: string;
   tagline: string;
-  projects: Array<{
-    id: number | string;
-    title: string;
-    slug: string;
-    image: string;
-    badge: string;
-  }>;
+  projects: ProjectItem[];
 }
 
 interface PortfolioPerServiceShowcaseProps {
@@ -39,6 +44,20 @@ export default function PortfolioPerServiceShowcase({
   groups,
   whatsappUrl = "https://wa.me/8801781955355",
 }: PortfolioPerServiceShowcaseProps) {
+  // Lightbox active state
+  const [activeGroupIdx, setActiveGroupIdx] = useState<number | null>(null);
+  const [activeItemIdx, setActiveItemIdx] = useState<number | null>(null);
+
+  const activeGroup = activeGroupIdx !== null ? groups[activeGroupIdx] : null;
+  const lightboxItems: LightboxItem[] = activeGroup
+    ? activeGroup.projects.map((p) => ({
+        id: p.id,
+        image: p.image,
+        videoUrl: p.videoUrl,
+        isVideo: p.isVideo,
+      }))
+    : [];
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
       {groups.map((group, groupIdx) => {
@@ -60,6 +79,12 @@ export default function PortfolioPerServiceShowcase({
           `Hi Sakhawat, I saw your "${group.name}" portfolio on your website and I'd like to discuss a project with you.`
         );
         const serviceWhatsappUrl = `${whatsappUrl}?text=${whatsappMsg}`;
+
+        const handleCardClick = (item: ProjectItem) => {
+          const originalIdx = group.projects.findIndex((p) => p.id === item.id);
+          setActiveGroupIdx(groupIdx);
+          setActiveItemIdx(originalIdx >= 0 ? originalIdx : 0);
+        };
 
         return (
           <section
@@ -186,9 +211,10 @@ export default function PortfolioPerServiceShowcase({
                   {/* First Group */}
                   <div className="portfolio-marquee-group">
                     {lane1Set.map((item, idx) => (
-                      <Link
+                      <button
+                        type="button"
                         key={`l1-g1-${item.id}-${idx}`}
-                        href={`/portfolio/${item.slug}`}
+                        onClick={() => handleCardClick(item)}
                         className="portfolio-square-card"
                         aria-label={`View ${item.title}`}
                       >
@@ -203,20 +229,20 @@ export default function PortfolioPerServiceShowcase({
                           <span className="card-hover-badge">{item.badge}</span>
                           <h3 className="card-hover-title">{item.title}</h3>
                           <div className="card-hover-action">
-                            <span>View Case Study</span>
-                            <span>↗</span>
+                            <span>{item.isVideo ? "Play Video ▶" : "View Image ↗"}</span>
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
 
                   {/* Second Identical Group (Ensures Seamless 360 Infinite Loop Without Any Gap) */}
                   <div className="portfolio-marquee-group" aria-hidden="true">
                     {lane1Set.map((item, idx) => (
-                      <Link
+                      <button
+                        type="button"
                         key={`l1-g2-${item.id}-${idx}`}
-                        href={`/portfolio/${item.slug}`}
+                        onClick={() => handleCardClick(item)}
                         className="portfolio-square-card"
                         tabIndex={-1}
                         aria-label={`View ${item.title}`}
@@ -232,11 +258,10 @@ export default function PortfolioPerServiceShowcase({
                           <span className="card-hover-badge">{item.badge}</span>
                           <h3 className="card-hover-title">{item.title}</h3>
                           <div className="card-hover-action">
-                            <span>View Case Study</span>
-                            <span>↗</span>
+                            <span>{item.isVideo ? "Play Video ▶" : "View Image ↗"}</span>
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -248,9 +273,10 @@ export default function PortfolioPerServiceShowcase({
                   {/* First Group */}
                   <div className="portfolio-marquee-group">
                     {lane2Set.map((item, idx) => (
-                      <Link
+                      <button
+                        type="button"
                         key={`l2-g1-${item.id}-${idx}`}
-                        href={`/portfolio/${item.slug}`}
+                        onClick={() => handleCardClick(item)}
                         className="portfolio-square-card"
                         aria-label={`View ${item.title}`}
                       >
@@ -265,20 +291,20 @@ export default function PortfolioPerServiceShowcase({
                           <span className="card-hover-badge">{item.badge}</span>
                           <h3 className="card-hover-title">{item.title}</h3>
                           <div className="card-hover-action">
-                            <span>View Case Study</span>
-                            <span>↗</span>
+                            <span>{item.isVideo ? "Play Video ▶" : "View Image ↗"}</span>
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
 
                   {/* Second Identical Group (Ensures Seamless 360 Infinite Loop Without Any Gap) */}
                   <div className="portfolio-marquee-group" aria-hidden="true">
                     {lane2Set.map((item, idx) => (
-                      <Link
+                      <button
+                        type="button"
                         key={`l2-g2-${item.id}-${idx}`}
-                        href={`/portfolio/${item.slug}`}
+                        onClick={() => handleCardClick(item)}
                         className="portfolio-square-card"
                         tabIndex={-1}
                         aria-label={`View ${item.title}`}
@@ -294,11 +320,10 @@ export default function PortfolioPerServiceShowcase({
                           <span className="card-hover-badge">{item.badge}</span>
                           <h3 className="card-hover-title">{item.title}</h3>
                           <div className="card-hover-action">
-                            <span>View Case Study</span>
-                            <span>↗</span>
+                            <span>{item.isVideo ? "Play Video ▶" : "View Image ↗"}</span>
                           </div>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -307,6 +332,17 @@ export default function PortfolioPerServiceShowcase({
           </section>
         );
       })}
+
+      {/* Full-Screen Clean Lightbox & YouTube Video Popup Modal */}
+      <CleanPortfolioLightbox
+        items={lightboxItems}
+        currentIndex={activeItemIdx}
+        onClose={() => {
+          setActiveGroupIdx(null);
+          setActiveItemIdx(null);
+        }}
+        onNavigate={(newIdx) => setActiveItemIdx(newIdx)}
+      />
 
       <style jsx global>{`
         /* Service Pavilion Card Wrapper: Clearly separates each service into its own room */
@@ -427,6 +463,9 @@ export default function PortfolioPerServiceShowcase({
           border: 1px solid rgba(255, 255, 255, 0.08);
           background: var(--bg-surface);
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+          cursor: pointer;
+          padding: 0;
+          text-align: left;
           transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .portfolio-square-card:hover {

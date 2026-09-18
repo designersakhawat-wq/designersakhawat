@@ -61,6 +61,7 @@ export interface Project {
   title: string;
   slug: string;
   cover_media_id: number | null;
+  video_url?: string | null;
   service_id: number | null;
   client: string | null;
   industry: string | null;

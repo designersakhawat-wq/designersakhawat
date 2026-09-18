@@ -7,6 +7,7 @@ interface Service { id: number; name: string; }
 interface Project {
   id: number; title: string; slug: string; status: string; featured: number;
   service_id: number | null; cover_media_id: number | null;
+  video_url?: string | null;
   client: string | null; industry: string | null;
   short_description: string | null; challenge: string | null; solution: string | null; result: string | null;
   services_provided: string | null; display_order: number;
@@ -234,6 +235,23 @@ export default function AdminProjectEditPage() {
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label">Short Description</label>
             <textarea className="form-textarea" rows={2} value={project.short_description || ""} onChange={(e) => setProject((p) => p ? { ...p, short_description: e.target.value } : p)} placeholder="Brief summary shown on cards" />
+          </div>
+
+          {/* YouTube / Video URL Input for Video Projects */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label" style={{ display: "flex", justifyContent: "space-between" }}>
+              <span>YouTube / Video URL (For AI Video & Motion Projects)</span>
+              {project.video_url && <span style={{ color: "var(--accent)", fontSize: "var(--text-xs)", fontWeight: 700 }}>▶ Video URL Configured</span>}
+            </label>
+            <input
+              className="form-input"
+              value={project.video_url || ""}
+              onChange={(e) => setProject((p) => p ? { ...p, video_url: e.target.value } : p)}
+              placeholder="e.g. https://www.youtube.com/watch?v=... or https://youtu.be/..."
+            />
+            <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", marginTop: 4, display: "block" }}>
+              When visitors click this card on the portfolio page, it will open and autoplay in a clean video popup player.
+            </span>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--space-md)" }}>
             <div className="form-group" style={{ marginBottom: 0 }}>

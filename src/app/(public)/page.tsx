@@ -51,7 +51,7 @@ export default async function HomePage() {
         LIMIT 8
       `),
       query<Project>(`
-        SELECT p.id, p.title, p.slug, p.cover_media_id, p.service_id, 
+        SELECT p.id, p.title, p.slug, p.cover_media_id, p.video_url, p.service_id, 
           p.client, p.short_description, p.featured, p.display_order, p.status,
           m.storage_path as cover_path, m.thumb_path as cover_thumb, m.medium_path as cover_medium, m.alt_text as cover_alt,
           s.name as service_name, s.slug as service_slug
@@ -60,14 +60,14 @@ export default async function HomePage() {
         LEFT JOIN services s ON p.service_id = s.id
         WHERE p.status = 'published' AND p.featured = 1
         ORDER BY p.display_order ASC
-        LIMIT 6
+        LIMIT 8
       `),
       query<Testimonial>(`
         SELECT t.id, 
-          COALESCE(t.author_name, t.client_name) as client_name,
-          COALESCE(t.author_role, t.designation) as designation,
+          t.author_name as client_name,
+          t.author_role as designation,
           t.company,
-          COALESCE(t.content, t.text) as text,
+          t.content as text,
           t.rating,
           t.photo_media_id,
           m.storage_path, m.thumb_path, m.alt_text

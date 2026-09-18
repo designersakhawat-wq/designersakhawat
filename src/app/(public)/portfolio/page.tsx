@@ -269,6 +269,8 @@ export default async function PortfolioPage() {
       slug: string;
       image: string;
       badge: string;
+      videoUrl?: string | null;
+      isVideo?: boolean;
     }> = matchingDbProjects.map((p) => ({
       id: p.id,
       title: p.title,
@@ -277,6 +279,8 @@ export default async function PortfolioPage() {
         ? `/api/media/${p.cover_media_id}?size=medium`
         : cfg.defaultProjects[0].image,
       badge: cfg.badge,
+      videoUrl: p.video_url || (cfg.slug === "ai-video-editing" ? "https://www.youtube.com/watch?v=EngW7tLk6R8" : null),
+      isVideo: cfg.slug === "ai-video-editing" || Boolean(p.video_url),
     }));
 
     // Ensure at least 6 distinct items per service by combining with curated defaults
@@ -284,7 +288,11 @@ export default async function PortfolioPage() {
     for (const def of cfg.defaultProjects) {
       if (combined.length >= 6) break;
       if (!combined.some((p) => p.title === def.title)) {
-        combined.push(def);
+        combined.push({
+          ...def,
+          videoUrl: cfg.slug === "ai-video-editing" ? "https://www.youtube.com/watch?v=EngW7tLk6R8" : null,
+          isVideo: cfg.slug === "ai-video-editing",
+        });
       }
     }
 

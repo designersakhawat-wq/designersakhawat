@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   return requireAdmin(req, async () => {
     const body = await req.json();
     const {
-      title, slug, cover_media_id, service_id, client, industry,
+      title, slug, cover_media_id, video_url, service_id, client, industry,
       short_description, challenge, solution, result, services_provided,
       featured, display_order, status, seo_title, seo_description, og_image_id
     } = body;
@@ -58,9 +58,9 @@ export async function POST(req: NextRequest) {
     const publishedAt = insertStatus === "published" ? new Date().toISOString().slice(0, 19).replace("T", " ") : null;
 
     const insertResult = await execute(
-      `INSERT INTO projects (title, slug, cover_media_id, service_id, client, industry, short_description, challenge, solution, result, services_provided, featured, display_order, status, seo_title, seo_description, og_image_id, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [title, slug, cover_media_id || null, service_id || null, client || null, industry || null, short_description || null, challenge || null, solution || null, result || null, services_provided || null, featured ? 1 : 0, display_order || 0, insertStatus, seo_title || null, seo_description || null, og_image_id || null, publishedAt]
+      `INSERT INTO projects (title, slug, cover_media_id, video_url, service_id, client, industry, short_description, challenge, solution, result, services_provided, featured, display_order, status, seo_title, seo_description, og_image_id, published_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [title, slug, cover_media_id || null, video_url || null, service_id || null, client || null, industry || null, short_description || null, challenge || null, solution || null, result || null, services_provided || null, featured ? 1 : 0, display_order || 0, insertStatus, seo_title || null, seo_description || null, og_image_id || null, publishedAt]
     );
 
     await execute("INSERT INTO activity_log (action, entity_type, entity_id, detail) VALUES (?, ?, ?, ?)",
