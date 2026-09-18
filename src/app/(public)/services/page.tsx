@@ -106,7 +106,7 @@ export default async function ServicesPage() {
             textAlign: "center",
           }}
         >
-          <div className="container">
+          <div className="container reveal-on-scroll">
             <span
               style={{
                 fontSize: "0.75rem",
@@ -155,11 +155,11 @@ export default async function ServicesPage() {
                 gap: 28,
               }}
             >
-              {displayServices.map((service) => (
+              {displayServices.map((service, idx) => (
                 <Link
                   key={service.id}
                   href={`/services/${service.slug}`}
-                  className="editorial-card"
+                  className={`editorial-card soft-hover-lift reveal-on-scroll delay-${(idx % 4) + 1}`}
                   style={{
                     display: "flex",
                     flexDirection: "column",

@@ -13,7 +13,10 @@ export default function StatsRibbon() {
       <div className="container">
         <div className="stats-ribbon-grid">
           {stats.map((stat, idx) => (
-            <div key={idx} className="stats-ribbon-item">
+            <div
+              key={idx}
+              className={`stats-ribbon-item reveal-on-scroll delay-${idx + 1}`}
+            >
               <span className="stats-ribbon-num">{stat.num}</span>
               <span className="stats-ribbon-label">{stat.label}</span>
               <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: 2 }}>

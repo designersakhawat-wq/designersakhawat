@@ -25,7 +25,7 @@ export default function ProcessSection() {
   return (
     <section className="section" style={{ background: "var(--bg-deep)" }} aria-labelledby="process-heading">
       <div className="container">
-        <div style={{ maxWidth: 640, marginBottom: "var(--space-2xl)" }}>
+        <div className="reveal-on-scroll" style={{ maxWidth: 640, marginBottom: "var(--space-2xl)" }}>
           <span className="section-label">Workflow</span>
           <h2 id="process-heading" className="section-heading">How We Bring Your Vision To Life</h2>
           <p className="section-subtext">
@@ -34,7 +34,7 @@ export default function ProcessSection() {
         </div>
 
         <div className="grid-4" style={{ gap: "var(--space-lg)" }}>
-          {steps.map((step) => (
+          {steps.map((step, idx) => (
             <div
               key={step.num}
               style={{
@@ -43,9 +43,8 @@ export default function ProcessSection() {
                 borderRadius: "var(--radius-lg)",
                 padding: "var(--space-xl) var(--space-lg)",
                 position: "relative",
-                transition: "all 0.25s ease",
               }}
-              className="process-card"
+              className={`process-card soft-hover-lift reveal-on-scroll delay-${idx + 1}`}
             >
               <div
                 style={{

@@ -51,7 +51,10 @@ export default function HeroSection({ settings }: HeroSectionProps) {
     >
       <div className="container" style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
         {/* Reference 1: Eyebrow Pill */}
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", background: "rgba(18, 20, 26, 0.8)", border: "1px solid var(--accent-border)", borderRadius: "var(--radius-full)", marginBottom: 20 }}>
+        <div
+          className="reveal-on-scroll is-visible delay-1 animate-soft-float"
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", background: "rgba(18, 20, 26, 0.8)", border: "1px solid var(--accent-border)", borderRadius: "var(--radius-full)", marginBottom: 20 }}
+        >
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 10px var(--accent)" }} />
           <span style={{ color: "var(--accent)", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", fontSize: "11px" }}>
             Creative Graphic Designer • Available for Projects
@@ -60,6 +63,7 @@ export default function HeroSection({ settings }: HeroSectionProps) {
 
         {/* Reference 1 & 2: Large High-Impact Typography */}
         <h1
+          className="reveal-on-scroll is-visible delay-2"
           style={{
             fontFamily: "var(--font-heading)",
             fontSize: "clamp(2.5rem, 5.5vw, 4.25rem)",
@@ -84,6 +88,7 @@ export default function HeroSection({ settings }: HeroSectionProps) {
 
         {/* Concise value proposition without cluttered text walls */}
         <p
+          className="reveal-on-scroll is-visible delay-3"
           style={{
             fontSize: "clamp(1rem, 1.8vw, 1.15rem)",
             color: "var(--text-secondary)",
@@ -97,9 +102,13 @@ export default function HeroSection({ settings }: HeroSectionProps) {
         </p>
 
         {/* Dual Actions */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 12 }}>
+        <div
+          className="reveal-on-scroll is-visible delay-4"
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 12 }}
+        >
           <Link
             href="/portfolio"
+            className="soft-hover-lift"
             style={{
               background: "var(--accent)",
               color: "#070709",
@@ -108,36 +117,35 @@ export default function HeroSection({ settings }: HeroSectionProps) {
               fontSize: "14px",
               padding: "14px 28px",
               borderRadius: "var(--radius-full)",
-              textDecoration: "none",
               display: "inline-flex",
               alignItems: "center",
               gap: 8,
-              boxShadow: "0 4px 20px rgba(212, 255, 0, 0.35)",
-              transition: "transform 0.2s ease",
+              textDecoration: "none",
+              boxShadow: "0 0 24px rgba(212, 255, 0, 0.35)",
             }}
           >
             <span>Explore Portfolio</span>
-            <span style={{ fontSize: 16 }}>↗</span>
+            <span>↓</span>
           </Link>
 
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            className="soft-hover-lift"
             style={{
-              background: "rgba(18, 20, 26, 0.8)",
-              color: "var(--text-primary)",
-              border: "1px solid var(--bg-border)",
+              background: "transparent",
+              color: "#ffffff",
               fontFamily: "var(--font-heading)",
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: "14px",
-              padding: "14px 26px",
+              padding: "14px 24px",
               borderRadius: "var(--radius-full)",
-              textDecoration: "none",
+              border: "1px solid rgba(255,255,255,0.15)",
               display: "inline-flex",
               alignItems: "center",
               gap: 8,
-              transition: "border-color 0.2s ease",
+              textDecoration: "none",
             }}
           >
             <span>💬 Chat on WhatsApp</span>
@@ -145,10 +153,10 @@ export default function HeroSection({ settings }: HeroSectionProps) {
         </div>
 
         {/* Reference 1: Interactive Fan-Out Card Deck */}
-        <div className="hero-deck-container">
+        <div className="hero-deck-container reveal-soft-scale is-visible delay-5">
           <div className="hero-deck">
             {showcaseCards.map((card, idx) => (
-              <Link key={idx} href={card.href} className="deck-card" aria-label={`View ${card.title}`}>
+              <Link key={idx} href={card.href} className="deck-card soft-hover-lift" aria-label={`View ${card.title}`}>
                 <div className="deck-card-image">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={card.image} alt={card.title} loading="eager" />

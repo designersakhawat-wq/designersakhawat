@@ -64,7 +64,7 @@ export default function PortfolioPerServiceShowcase({
         return (
           <section
             key={group.id || groupIdx}
-            className="service-pavilion-card"
+            className="service-pavilion-card reveal-on-scroll"
           >
             {/* Service Section Header */}
             <div className="container" style={{ marginBottom: 28 }}>

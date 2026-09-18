@@ -43,12 +43,23 @@ export default function ProjectsSection({
   const allItems = mappedProjects.length >= 6 ? mappedProjects : fallbackProjects;
 
   // Split into Road 1 and Road 2
-  const road1 = allItems.slice(0, Math.ceil(allItems.length / 2));
-  const road2 = allItems.slice(Math.ceil(allItems.length / 2));
+  const road1Raw = allItems.slice(0, Math.ceil(allItems.length / 2));
+  const road2Raw = allItems.slice(Math.ceil(allItems.length / 2));
 
-  // Duplicate for seamless 360 infinite loop
-  const road1Full = [...road1, ...road1, ...road1, ...road1];
-  const road2Full = [...road2, ...road2, ...road2, ...road2];
+  // Build sets with at least 8 items each to guarantee screen coverage
+  const buildLane = (arr: typeof allItems) => {
+    const res: typeof allItems = [];
+    while (res.length < 8) {
+      for (const item of arr) {
+        res.push(item);
+        if (res.length >= 8) break;
+      }
+    }
+    return res;
+  };
+
+  const road1Set = buildLane(road1Raw);
+  const road2Set = buildLane(road2Raw);
 
   return (
     <section
@@ -62,8 +73,11 @@ export default function ProjectsSection({
       aria-labelledby="projects-heading"
     >
       <div className="container" style={{ marginBottom: 32 }}>
-        {/* Simple & Clean Header: No extra clutter */}
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+        {/* Simple & Clean Header */}
+        <div
+          className="reveal-on-scroll"
+          style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}
+        >
           <div>
             <span className="section-label">{label}</span>
             <h2 id="projects-heading" className="section-heading" style={{ margin: 0 }}>
@@ -71,7 +85,7 @@ export default function ProjectsSection({
             </h2>
           </div>
           {showViewAll && (
-            <Link href="/portfolio" className="btn btn-outline">
+            <Link href="/portfolio" className="btn btn-outline soft-hover-lift">
               Explore All Work →
             </Link>
           )}
@@ -79,108 +93,212 @@ export default function ProjectsSection({
       </div>
 
       {/* 2 Continuous 360° Infinite Animated Roads of 1:1 Square Cards */}
-      <div className="portfolio-roads-wrapper">
+      <div className="portfolio-roads-wrapper reveal-soft-fade delay-1">
         {/* Road 1: Drifting Continuously Left */}
         <div className="portfolio-road-track">
           <div className="portfolio-road-content road-drift-left">
-            {road1Full.map((item, idx) => (
-              <Link
-                key={`r1-${item.id}-${idx}`}
-                href={`/portfolio/${item.slug}`}
-                className="square-card-1x1"
-                title={item.title}
-                aria-label={item.title}
-              >
-                <Image
-                  src={item.cover}
-                  alt={item.title}
-                  fill
-                  sizes="280px"
-                  style={{ objectFit: "cover" }}
-                />
-                {/* Subtle Hover Reveal (inside the card only, zero outside text) */}
-                <div className="square-card-hover-overlay">
-                  <span
-                    style={{
-                      fontSize: "0.6875rem",
-                      color: "var(--accent)",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      marginBottom: 4,
-                    }}
-                  >
-                    {item.service}
-                  </span>
-                  <p
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 700,
-                      color: "#ffffff",
-                      margin: 0,
-                      lineHeight: 1.3,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {item.title}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {/* Group 1 */}
+            <div style={{ display: "flex", gap: "var(--space-md)", flexShrink: 0, paddingRight: "var(--space-md)" }}>
+              {road1Set.map((item, idx) => (
+                <Link
+                  key={`r1-g1-${item.id}-${idx}`}
+                  href={`/portfolio/${item.slug}`}
+                  className="square-card-1x1"
+                  title={item.title}
+                  aria-label={item.title}
+                >
+                  <Image
+                    src={item.cover}
+                    alt={item.title}
+                    fill
+                    sizes="280px"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div className="square-card-hover-overlay">
+                    <span
+                      style={{
+                        fontSize: "0.6875rem",
+                        color: "var(--accent)",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        marginBottom: 4,
+                      }}
+                    >
+                      {item.service}
+                    </span>
+                    <p
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 700,
+                        color: "#ffffff",
+                        margin: 0,
+                        lineHeight: 1.3,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.title}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Group 2 (Identical duplicate for seamless 360 infinite loop) */}
+            <div style={{ display: "flex", gap: "var(--space-md)", flexShrink: 0, paddingRight: "var(--space-md)" }} aria-hidden="true">
+              {road1Set.map((item, idx) => (
+                <Link
+                  key={`r1-g2-${item.id}-${idx}`}
+                  href={`/portfolio/${item.slug}`}
+                  className="square-card-1x1"
+                  tabIndex={-1}
+                  title={item.title}
+                  aria-label={item.title}
+                >
+                  <Image
+                    src={item.cover}
+                    alt={item.title}
+                    fill
+                    sizes="280px"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div className="square-card-hover-overlay">
+                    <span
+                      style={{
+                        fontSize: "0.6875rem",
+                        color: "var(--accent)",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        marginBottom: 4,
+                      }}
+                    >
+                      {item.service}
+                    </span>
+                    <p
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 700,
+                        color: "#ffffff",
+                        margin: 0,
+                        lineHeight: 1.3,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.title}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Road 2: Drifting Continuously Right */}
         <div className="portfolio-road-track">
           <div className="portfolio-road-content road-drift-right">
-            {road2Full.map((item, idx) => (
-              <Link
-                key={`r2-${item.id}-${idx}`}
-                href={`/portfolio/${item.slug}`}
-                className="square-card-1x1"
-                title={item.title}
-                aria-label={item.title}
-              >
-                <Image
-                  src={item.cover}
-                  alt={item.title}
-                  fill
-                  sizes="280px"
-                  style={{ objectFit: "cover" }}
-                />
-                {/* Subtle Hover Reveal (inside the card only, zero outside text) */}
-                <div className="square-card-hover-overlay">
-                  <span
-                    style={{
-                      fontSize: "0.6875rem",
-                      color: "var(--accent)",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      marginBottom: 4,
-                    }}
-                  >
-                    {item.service}
-                  </span>
-                  <p
-                    style={{
-                      fontSize: "0.875rem",
-                      fontWeight: 700,
-                      color: "#ffffff",
-                      margin: 0,
-                      lineHeight: 1.3,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {item.title}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {/* Group 1 */}
+            <div style={{ display: "flex", gap: "var(--space-md)", flexShrink: 0, paddingRight: "var(--space-md)" }}>
+              {road2Set.map((item, idx) => (
+                <Link
+                  key={`r2-g1-${item.id}-${idx}`}
+                  href={`/portfolio/${item.slug}`}
+                  className="square-card-1x1"
+                  title={item.title}
+                  aria-label={item.title}
+                >
+                  <Image
+                    src={item.cover}
+                    alt={item.title}
+                    fill
+                    sizes="280px"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div className="square-card-hover-overlay">
+                    <span
+                      style={{
+                        fontSize: "0.6875rem",
+                        color: "var(--accent)",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        marginBottom: 4,
+                      }}
+                    >
+                      {item.service}
+                    </span>
+                    <p
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 700,
+                        color: "#ffffff",
+                        margin: 0,
+                        lineHeight: 1.3,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.title}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Group 2 (Identical duplicate for seamless 360 infinite loop) */}
+            <div style={{ display: "flex", gap: "var(--space-md)", flexShrink: 0, paddingRight: "var(--space-md)" }} aria-hidden="true">
+              {road2Set.map((item, idx) => (
+                <Link
+                  key={`r2-g2-${item.id}-${idx}`}
+                  href={`/portfolio/${item.slug}`}
+                  className="square-card-1x1"
+                  tabIndex={-1}
+                  title={item.title}
+                  aria-label={item.title}
+                >
+                  <Image
+                    src={item.cover}
+                    alt={item.title}
+                    fill
+                    sizes="280px"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div className="square-card-hover-overlay">
+                    <span
+                      style={{
+                        fontSize: "0.6875rem",
+                        color: "var(--accent)",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        marginBottom: 4,
+                      }}
+                    >
+                      {item.service}
+                    </span>
+                    <p
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: 700,
+                        color: "#ffffff",
+                        margin: 0,
+                        lineHeight: 1.3,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.title}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

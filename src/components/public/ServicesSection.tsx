@@ -69,7 +69,10 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
     >
       <div className="container">
         {/* Section Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
+        <div
+          className="reveal-on-scroll"
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40, flexWrap: "wrap", gap: 16 }}
+        >
           <div>
             <span className="section-label">Core Capabilities</span>
             <h2 id="services-heading" className="section-heading" style={{ marginBottom: 8 }}>
@@ -79,13 +82,13 @@ export default function ServicesSection({ services }: ServicesSectionProps) {
               Tailored visual solutions that eliminate generic clutter and establish authoritative market presence.
             </p>
           </div>
-          <Link href="/services" className="btn btn-outline">
+          <Link href="/services" className="btn btn-outline soft-hover-lift">
             All Services & Pricing →
           </Link>
         </div>
 
         {/* Interactive Capability Showcase */}
-        <div className="services-interactive-wrapper">
+        <div className="services-interactive-wrapper reveal-soft-scale delay-2">
           {/* Left Column: Interactive Selector */}
           <div style={{ display: "flex", flexDirection: "column" }}>
             {services.map((service, idx) => {
